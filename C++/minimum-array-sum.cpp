@@ -2,7 +2,7 @@
 // Space: O(n)
 
 // greedy, case works
-// Reference: https://leetcode.com/problems/minimum-array-sum/solutions/6078002/o-n-log-n-greedy/
+// Reference: https://leetcode.cn/problems/minimum-array-sum/solutions/6078002/o-n-log-n-greedy/
 class Solution {
 public:
     int minArraySum(vector<int>& nums, int k, int op1, int op2) {

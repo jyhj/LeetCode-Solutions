@@ -221,7 +221,7 @@
       * [Topcoder](https://arena.topcoder.com/) (more mathy)
       * [CodeChef](https://www.codechef.com/contests/)
    * For Interview
-      * [LeetCode](https://leetcode.com/contest/)
+      * [LeetCode](https://leetcode.cn/contest/)
       * [GeeksforGeeks](https://www.geeksforgeeks.org/events/rec/gfg-weekly-coding-contest)
 * Practice Sites
    * For Competitive Programming 

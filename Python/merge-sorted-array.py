@@ -22,3 +22,6 @@ class Solution(object):
                 A[last] = B[j]
                 last, j = last - 1, j - 1
 
+        # 为什么只需要处理 nums2 的剩余
+        # 因为如果最后剩的是 nums1[0...i]，它们本来就在正确位置上，不需要动。
+        # 但如果剩的是 nums2[0...j]，它们还没进 nums1，必须补进去。

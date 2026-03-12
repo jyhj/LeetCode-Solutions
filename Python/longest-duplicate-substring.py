@@ -2,9 +2,9 @@
 # Space: O(n)
 
 # 1. other solution is to apply kasai's algorithm, refer to the link below:
-# - https://leetcode.com/problems/longest-duplicate-substring/discuss/290852/Suffix-array-clear-solution
+# - https://leetcode.cn/problems/longest-duplicate-substring/discuss/290852/Suffix-array-clear-solution
 # 2. the best solution is to apply ukkonen's algorithm, refer to the link below:
-# - https://leetcode.com/problems/longest-duplicate-substring/discuss/312999/best-java-on-complexity-and-on-space-solution-suffix-tree-67ms
+# - https://leetcode.cn/problems/longest-duplicate-substring/discuss/312999/best-java-on-complexity-and-on-space-solution-suffix-tree-67ms
 
 import collections
 

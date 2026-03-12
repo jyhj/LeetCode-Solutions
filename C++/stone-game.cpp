@@ -1,7 +1,7 @@
 // Time:  O(n^2)
 // Space: O(n)
 
-// The solution is the same as https://leetcode.com/problems/predict-the-winner/description/
+// The solution is the same as https://leetcode.cn/problems/predict-the-winner/description/
 class Solution {
 public:
     bool stoneGame(vector<int>& piles) {

@@ -5,7 +5,7 @@
 // int rand7();
 // @return a random integer in the range 1 to 7
 
-// Reference: https://leetcode.com/problems/implement-rand10-using-rand7/discuss/151567/C++JavaPython-Average-1.199-Call-rand7-Per-rand10
+// Reference: https://leetcode.cn/problems/implement-rand10-using-rand7/discuss/151567/C++JavaPython-Average-1.199-Call-rand7-Per-rand10
 class Solution {
 public:
     int rand10() {

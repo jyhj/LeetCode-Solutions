@@ -1,7 +1,7 @@
 # Time:  O((logn)^2)
 # Space: O((logn)^2)
 
-# complexity analysis: see https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/discuss/794847/Polylogarithmic-solution
+# complexity analysis: see https://leetcode.cn/problems/minimum-number-of-days-to-eat-n-oranges/discuss/794847/Polylogarithmic-solution
 class Solution(object):
     def minDays(self, n):
         """

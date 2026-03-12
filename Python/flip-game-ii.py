@@ -6,7 +6,7 @@ import re
 
 
 # The best theory solution (DP, O(n + c^2)) could be seen here:
-# https://leetcode.com/problems/flip-game-ii/discuss/73954/theory-matters-from-backtracking128ms-to-dp-0ms
+# https://leetcode.cn/problems/flip-game-ii/discuss/73954/theory-matters-from-backtracking128ms-to-dp-0ms
 class Solution(object):
     def canWin(self, s):
         g, g_final = [0], 0

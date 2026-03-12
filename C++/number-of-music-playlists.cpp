@@ -2,7 +2,7 @@
 // Space: O(l)
 
 // Another better solution (generating function), you could refer to 
-// https://leetcode.com/problems/number-of-music-playlists/solution/
+// https://leetcode.cn/problems/number-of-music-playlists/solution/
 class Solution {
 public:
     int numMusicPlaylists(int N, int L, int K) {

@@ -2,8 +2,8 @@
 // Space: O(t + m * n)
 
 // Solution Reference: 
-// 1. https://discuss.leetcode.com/topic/103532/my-python-solution-inspired-by-a-algorithm/2
-// 2. https://discuss.leetcode.com/topic/103562/python-solution-based-on-wufangjie-s-hadlock-s-algorithm
+// 1. https://discuss.leetcode.cn/topic/103532/my-python-solution-inspired-by-a-algorithm/2
+// 2. https://discuss.leetcode.cn/topic/103562/python-solution-based-on-wufangjie-s-hadlock-s-algorithm
 // 3. https://en.wikipedia.org/wiki/A*_search_algorithm
 // 4. https://cg2010studio.files.wordpress.com/2011/12/dijkstra-vs-a-star.png
 class Solution {

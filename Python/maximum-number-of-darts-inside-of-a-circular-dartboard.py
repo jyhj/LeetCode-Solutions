@@ -6,7 +6,7 @@ import math
 
 # angle sweep solution
 # great explanation:
-# https://leetcode.com/problems/maximum-number-of-darts-inside-of-a-circular-dartboard/discuss/636345/Python-O(n3)-and-O(n2logn)-solution-explained-in-detail-with-pictures
+# https://leetcode.cn/problems/maximum-number-of-darts-inside-of-a-circular-dartboard/discuss/636345/Python-O(n3)-and-O(n2logn)-solution-explained-in-detail-with-pictures
 class Solution(object):
     def numPoints(self, points, r):
         """

@@ -16,7 +16,7 @@ class Solution(object):
 
 
     # Proof of Reservoir Sampling:
-    # https://discuss.leetcode.com/topic/53753/brief-explanation-for-reservoir-sampling
+    # https://discuss.leetcode.cn/topic/53753/brief-explanation-for-reservoir-sampling
     def getRandom(self):
         """
         :rtype: int
