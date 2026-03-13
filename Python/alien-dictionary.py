@@ -1,3 +1,11 @@
+"""
+题意: 给一组按字典序排序的外星词典单词，推导字母顺序。
+思路1: 构图后用 BFS 做拓扑排序。
+复杂度: 时间 O(n), 空间 O(1)（字母表固定）。
+思路2: 构图后用 DFS 做拓扑排序并检测环。
+复杂度: 时间 O(n), 空间 O(1)。
+"""
+
 # Time:  O(n)
 # Space: O(|V|+|E|) = O(26 + 26^2) = O(1)
 
@@ -5,7 +13,7 @@ import collections
 
 
 # BFS solution.
-class Solution(object):
+class Solution:
     def alienOrder(self, words):
         """
         :type words: List[str]
@@ -18,9 +26,9 @@ class Solution(object):
             for c in word:
                 nodes.add(c)
 
-        for i in xrange(1, len(words)):
-            if (len(words[i-1]) > len(words[i]) and
-                    words[i-1][:len(words[i])] == words[i]):
+        for i in range(1, len(words)):
+            if (len(words[i - 1]) > len(words[i]) and
+                    words[i - 1][:len(words[i])] == words[i]):
                 return ""
             self.findEdges(words[i - 1], words[i], in_degree, out_degree)
 
@@ -48,7 +56,7 @@ class Solution(object):
     # Construct the graph.
     def findEdges(self, word1, word2, in_degree, out_degree):
         str_len = min(len(word1), len(word2))
-        for i in xrange(str_len):
+        for i in range(str_len):
             if word1[i] != word2[i]:
                 if word2[i] not in in_degree:
                     in_degree[word2[i]] = set()
@@ -60,7 +68,7 @@ class Solution(object):
 
 
 # DFS solution.
-class Solution2(object):
+class Solution2:
     def alienOrder(self, words):
         """
         :type words: List[str]
@@ -68,14 +76,14 @@ class Solution2(object):
         """
         # Find ancestors of each node by DFS.
         nodes, ancestors = set(), {}
-        for i in xrange(len(words)):
+        for i in range(len(words)):
             for c in words[i]:
                 nodes.add(c)
         for node in nodes:
             ancestors[node] = []
-        for i in xrange(1, len(words)):
-            if (len(words[i-1]) > len(words[i]) and
-                    words[i-1][:len(words[i])] == words[i]):
+        for i in range(1, len(words)):
+            if (len(words[i - 1]) > len(words[i]) and
+                    words[i - 1][:len(words[i])] == words[i]):
                 return ""
             self.findEdges(words[i - 1], words[i], ancestors)
 
@@ -91,7 +99,7 @@ class Solution2(object):
     # Construct the graph.
     def findEdges(self, word1, word2, ancestors):
         min_len = min(len(word1), len(word2))
-        for i in xrange(min_len):
+        for i in range(min_len):
             if word1[i] != word2[i]:
                 ancestors[word2[i]].append(word1[i])
                 break

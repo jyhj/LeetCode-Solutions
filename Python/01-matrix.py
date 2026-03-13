@@ -1,61 +1,71 @@
+"""
+题意: 返回每个位置到最近 0 的最短距离。
+思路1: 两次 DP 扫描，原地更新距离。
+复杂度: 时间 O(mn), 空间 O(1)（原地）。
+思路2: DP 使用额外数组保存距离。
+复杂度: 时间 O(mn), 空间 O(mn)。
+思路3: 多源 BFS，从所有 0 同时扩展。
+复杂度: 时间 O(mn), 空间 O(mn)。
+"""
+
 # Time:  O(m * n)
 # Space: O(1)
 
 # dp solution
-class Solution(object):
+class Solution:
     def updateMatrix(self, matrix):
         """
         :type matrix: List[List[int]]
         :rtype: List[List[int]]
         """
-        for i in xrange(len(matrix)):
-            for j in xrange(len(matrix[i])):
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
                 if not matrix[i][j]:
                     continue
                 matrix[i][j] = float("inf")
                 if i > 0:
-                    matrix[i][j] = min(matrix[i][j], matrix[i-1][j]+1)
+                    matrix[i][j] = min(matrix[i][j], matrix[i - 1][j] + 1)
                 if j > 0:
-                    matrix[i][j] = min(matrix[i][j], matrix[i][j-1]+1)
-        for i in reversed(xrange(len(matrix))):
-            for j in reversed(xrange(len(matrix[i]))):
+                    matrix[i][j] = min(matrix[i][j], matrix[i][j - 1] + 1)
+        for i in reversed(range(len(matrix))):
+            for j in reversed(range(len(matrix[i]))):
                 if not matrix[i][j]:
                     continue
-                if i < len(matrix)-1:
-                    matrix[i][j] = min(matrix[i][j], matrix[i+1][j]+1)
-                if j < len(matrix[i])-1:
-                    matrix[i][j] = min(matrix[i][j], matrix[i][j+1]+1)
+                if i < len(matrix) - 1:
+                    matrix[i][j] = min(matrix[i][j], matrix[i + 1][j] + 1)
+                if j < len(matrix[i]) - 1:
+                    matrix[i][j] = min(matrix[i][j], matrix[i][j + 1] + 1)
         return matrix
 
 
 # Time:  O(m * n)
 # Space: O(m * n)
 # dp solution
-class Solution2(object):
+class Solution2:
     def updateMatrix(self, matrix):
         """
         :type matrix: List[List[int]]
         :rtype: List[List[int]]
         """
-        dp = [[float("inf")]*len(matrix[0]) for _ in xrange(len(matrix))]
-        for i in xrange(len(matrix)):
-            for j in xrange(len(matrix[i])):
+        dp = [[float("inf")] * len(matrix[0]) for _ in range(len(matrix))]
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
                 if matrix[i][j] == 0:
                     dp[i][j] = 0
                 else:
                     if i > 0:
-                        dp[i][j] = min(dp[i][j], dp[i-1][j]+1)
+                        dp[i][j] = min(dp[i][j], dp[i - 1][j] + 1)
                     if j > 0:
-                        dp[i][j] = min(dp[i][j], dp[i][j-1]+1)
-        for i in reversed(xrange(len(matrix))):
-            for j in reversed(xrange(len(matrix[i]))):
+                        dp[i][j] = min(dp[i][j], dp[i][j - 1] + 1)
+        for i in reversed(range(len(matrix))):
+            for j in reversed(range(len(matrix[i]))):
                 if matrix[i][j] == 0:
                     dp[i][j] = 0
                 else:
-                    if i < len(matrix)-1:
-                        dp[i][j] = min(dp[i][j], dp[i+1][j]+1)
-                    if j < len(matrix[i])-1:
-                        dp[i][j] = min(dp[i][j], dp[i][j+1]+1)
+                    if i < len(matrix) - 1:
+                        dp[i][j] = min(dp[i][j], dp[i + 1][j] + 1)
+                    if j < len(matrix[i]) - 1:
+                        dp[i][j] = min(dp[i][j], dp[i][j + 1] + 1)
         return dp
 
 
@@ -64,15 +74,15 @@ class Solution2(object):
 import collections
 
 
-class Solution3(object):
+class Solution3:
     def updateMatrix(self, matrix):
         """
         :type matrix: List[List[int]]
         :rtype: List[List[int]]
         """
         queue = collections.deque()
-        for i in xrange(len(matrix)):
-            for j in xrange(len(matrix[0])):
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
                 if matrix[i][j] == 0:
                     queue.append((i, j))
                 else:
@@ -82,12 +92,12 @@ class Solution3(object):
         while queue:
             cell = queue.popleft()
             for dir in dirs:
-                i, j = cell[0]+dir[0], cell[1]+dir[1]
+                i, j = cell[0] + dir[0], cell[1] + dir[1]
                 if not (0 <= i < len(matrix) and
                         0 <= j < len(matrix[0]) and
-                        matrix[i][j] > matrix[cell[0]][cell[1]]+1):
+                        matrix[i][j] > matrix[cell[0]][cell[1]] + 1):
                     continue
                 queue.append((i, j))
-                matrix[i][j] = matrix[cell[0]][cell[1]]+1
+                matrix[i][j] = matrix[cell[0]][cell[1]] + 1
 
         return matrix

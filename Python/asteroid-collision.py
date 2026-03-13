@@ -1,7 +1,15 @@
+"""
+题意: 模拟小行星碰撞，返回最终状态。
+思路1: 用栈处理相向碰撞。
+复杂度: 时间 O(n), 空间 O(n)。
+思路2: 同上，写法不同。
+复杂度: 时间 O(n), 空间 O(n)。
+"""
+
 # Time:  O(n)
 # Space: O(n)
 
-class Solution(object):
+class Solution:
     def asteroidCollision(self, asteroids):
         """
         :type asteroids: List[int]
@@ -24,7 +32,7 @@ class Solution(object):
 
 # Time:  O(n)
 # Space: O(n)
-class Solution2(object):
+class Solution2:
     def asteroidCollision(self, asteroids):
         """
         :type asteroids: List[int]

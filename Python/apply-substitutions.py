@@ -1,3 +1,11 @@
+"""
+题意: 按照替换规则递归展开文本中的 %X% 占位符。
+思路1: 拓扑排序按依赖顺序替换。
+复杂度: 时间 O(r * 2^r), 空间 O(r * 2^r)。
+思路2: 递归 + 记忆化替换。
+复杂度: 时间 O(r * 2^r), 空间 O(r * 2^r)。
+"""
+
 # Time:  O(r * 2^r)
 # Space: O(r * 2^r)
 
@@ -5,7 +13,7 @@ import collections
 
 
 # topological sort
-class Solution(object):
+class Solution:
     def applySubstitutions(self, replacements, text):
         """
         :type replacements: List[List[str]]
@@ -19,11 +27,11 @@ class Solution(object):
                 if s[i] != '%':
                     i += 1
                     continue
-                j = next(j for j in xrange(i+1, len(s)) if s[j] == '%')
-                result.add(s[i+1:j])
-                i = j+1
+                j = next(j for j in range(i + 1, len(s)) if s[j] == '%')
+                result.add(s[i + 1:j])
+                i = j + 1
             return result
-        
+
         def replace(s):
             result = []
             i = 0
@@ -32,11 +40,11 @@ class Solution(object):
                     result.append(s[i])
                     i += 1
                     continue
-                j = next(j for j in xrange(i+1, len(s)) if s[j] == '%')
-                result.append(lookup[s[i+1:j]])
-                i = j+1
+                j = next(j for j in range(i + 1, len(s)) if s[j] == '%')
+                result.append(lookup[s[i + 1:j]])
+                i = j + 1
             return "".join(result)
-        
+
         def topological_sort():
             adj = collections.defaultdict(set)
             in_degree = collections.defaultdict(int)
@@ -44,7 +52,6 @@ class Solution(object):
                 for v in find_adj(s):
                     adj[v].add(u)
                     in_degree[u] += 1
-            result = []
             q = [u for u, _ in replacements if not in_degree[u]]
             while q:
                 new_q = []
@@ -56,9 +63,8 @@ class Solution(object):
                             continue
                         new_q.append(v)
                 q = new_q
-            return result
 
-        lookup = {k:v for k, v in replacements}
+        lookup = {k: v for k, v in replacements}
         topological_sort()
         return replace(text)
 
@@ -66,15 +72,16 @@ class Solution(object):
 # Time:  O(r * 2^r)
 # Space: O(r * 2^r)
 # memoization
-class Solution2(object):
+class Solution2:
     def applySubstitutions(self, replacements, text):
         """
         :type replacements: List[List[str]]
         :type text: str
         :rtype: str
         """
-        lookup = {k:v for k, v in replacements}
+        lookup = {k: v for k, v in replacements}
         memo = {}
+
         def replace(s):
             if s not in memo:
                 result = []
@@ -84,9 +91,9 @@ class Solution2(object):
                         result.append(s[i])
                         i += 1
                         continue
-                    j = next(j for j in xrange(i+1, len(s)) if s[j] == '%')
-                    result.append(replace(lookup[s[i+1:j]]))
-                    i = j+1
+                    j = next(j for j in range(i + 1, len(s)) if s[j] == '%')
+                    result.append(replace(lookup[s[i + 1:j]]))
+                    i = j + 1
                 memo[s] = "".join(result)
             return memo[s]
 

@@ -1,3 +1,13 @@
+"""
+题意: 每天涂一段区间，返回每天新增被涂的长度。
+思路1: 线扫 + 最小堆记录当前最早开始的区间。
+复杂度: 时间 O(n log n), 空间 O(n)。
+思路2: 线扫 + SortedList 维护活动区间。
+复杂度: 时间 O(n log n), 空间 O(n)。
+思路3: 线段树区间覆盖统计（较慢）。
+复杂度: 时间 O(n log r), 空间 O(r)。
+"""
+
 # Time:  O(nlogn)
 # Space: O(n)
 
@@ -6,7 +16,7 @@ import heapq
 
 
 # line sweep, heap
-class Solution(object):
+class Solution:
     def amountPainted(self, paint):
         """
         :type paint: List[List[int]]
@@ -17,14 +27,14 @@ class Solution(object):
             points[s].append((True, i))
             points[e].append((False, i))
         min_heap = []
-        lookup = [False]*len(paint)
-        result = [0]*len(paint)
+        lookup = [False] * len(paint)
+        result = [0] * len(paint)
         prev = -1
-        for pos in sorted(points.iterkeys()):
+        for pos in sorted(points.keys()):
             while min_heap and lookup[min_heap[0]]:
                 heapq.heappop(min_heap)
             if min_heap:
-                result[min_heap[0]] += pos-prev
+                result[min_heap[0]] += pos - prev
             prev = pos
             for t, i in points[pos]:
                 if t:
@@ -32,15 +42,15 @@ class Solution(object):
                 else:
                     lookup[i] = True
         return result
-                    
-            
+
+
 # Time:  O(nlogn)
 # Space: O(n)
 from sortedcontainers import SortedList
 
 
 # line sweep, sorted list
-class Solution2(object):
+class Solution2:
     def amountPainted(self, paint):
         """
         :type paint: List[List[int]]
@@ -51,11 +61,11 @@ class Solution2(object):
             points[s].append((True, i))
             points[e].append((False, i))
         sl = SortedList()
-        result = [0]*len(paint)
+        result = [0] * len(paint)
         prev = -1
-        for pos in sorted(points.iterkeys()):
+        for pos in sorted(points.keys()):
             if sl:
-                result[sl[0]] += pos-prev
+                result[sl[0]] += pos - prev
             prev = pos
             for t, i in points[pos]:
                 if t:
@@ -65,37 +75,37 @@ class Solution2(object):
         return result
 
 
-class SegmentTree(object):
+class SegmentTree:
     def __init__(self, N,
                  build_fn=lambda x: 0,
-                 query_fn=lambda x, y: y if x is None else x+y,
+                 query_fn=lambda x, y: y if x is None else x + y,
                  update_fn=lambda x, y: y):
-        self.tree = [None]*(2*N)
-        self.lazy = [None]*len(self.tree)
-        self.base = len(self.tree)//2
-        self.H = (self.base-1).bit_length()
+        self.tree = [None] * (2 * N)
+        self.lazy = [None] * len(self.tree)
+        self.base = len(self.tree) // 2
+        self.H = (self.base - 1).bit_length()
         self.query_fn = query_fn
         self.update_fn = update_fn
-        for i in xrange(self.base, self.base+N):
-            self.tree[i] = build_fn(i-self.base)
-        for i in reversed(xrange(1, self.base)):
-            self.tree[i] = query_fn(self.tree[2*i], self.tree[2*i+1])
-        self.count = [1]*(2*N)
-        for i in reversed(xrange(1, N)):
-            self.count[i] = self.count[2*i] + self.count[2*i+1]
+        for i in range(self.base, self.base + N):
+            self.tree[i] = build_fn(i - self.base)
+        for i in reversed(range(1, self.base)):
+            self.tree[i] = query_fn(self.tree[2 * i], self.tree[2 * i + 1])
+        self.count = [1] * (2 * N)
+        for i in reversed(range(1, N)):
+            self.count[i] = self.count[2 * i] + self.count[2 * i + 1]
 
     def __apply(self, x, val):
-        self.tree[x] = self.update_fn(self.tree[x], val*self.count[x])
+        self.tree[x] = self.update_fn(self.tree[x], val * self.count[x])
         if x < self.base:
             self.lazy[x] = self.update_fn(self.lazy[x], val)
 
     def __push(self, x):
-        n = 2**self.H
+        n = 2 ** self.H
         while n != 1:
             y = x // n
             if self.lazy[y] is not None:
-                self.__apply(y*2, self.lazy[y])
-                self.__apply(y*2 + 1, self.lazy[y])
+                self.__apply(y * 2, self.lazy[y])
+                self.__apply(y * 2 + 1, self.lazy[y])
                 self.lazy[y] = None
             n //= 2
 
@@ -103,9 +113,9 @@ class SegmentTree(object):
         def pull(x):
             while x > 1:
                 x //= 2
-                self.tree[x] = self.query_fn(self.tree[x*2], self.tree[x*2+1])
+                self.tree[x] = self.query_fn(self.tree[x * 2], self.tree[x * 2 + 1])
                 if self.lazy[x] is not None:
-                    self.tree[x] = self.update_fn(self.tree[x], self.lazy[x]*self.count[x])
+                    self.tree[x] = self.update_fn(self.tree[x], self.lazy[x] * self.count[x])
 
         if L > R:
             return
@@ -150,7 +160,7 @@ class SegmentTree(object):
 # Time:  O(nlogr), r is the max position
 # Space: O(r)
 # segment tree
-class SolutionTLE(object):
+class Solution3:
     def amountPainted(self, paint):
         """
         :type paint: List[List[int]]
@@ -159,7 +169,7 @@ class SolutionTLE(object):
         result = []
         st = SegmentTree(max(e for _, e in paint))
         for s, e in paint:
-            cnt = st.query(s, e-1)
-            st.update(s, e-1, 1)
-            result.append(st.query(s, e-1)-cnt)
+            cnt = st.query(s, e - 1)
+            st.update(s, e - 1, 1)
+            result.append(st.query(s, e - 1) - cnt)
         return result

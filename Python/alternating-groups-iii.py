@@ -1,3 +1,11 @@
+"""
+题意: 动态修改环形数组颜色，并查询长度为 k 的交替组数量。
+思路1: 维护断点集合与长度频次，查询用前缀和计算。
+复杂度: 时间 O(n log n + q log n), 空间 O(n)。
+思路2: 朴素模拟，每次查询线性统计。
+复杂度: 时间 O(q * n), 空间 O(n)。
+"""
+
 # Time:  O(nlogn + qlogn)
 # Space: O(n)
 
@@ -5,16 +13,16 @@ from sortedcontainers import SortedList
 
 
 # sorted list, freq table, bit, fenwick tree
-class Solution(object):
+class Solution:
     def numberOfAlternatingGroups(self, colors, queries):
         """
         :type colors: List[int]
         :type queries: List[List[int]]
         :rtype: List[int]
         """
-        class BIT(object):  # 0-indexed.
+        class BIT:  # 0-indexed.
             def __init__(self, n):
-                self.__bit = [0]*(n+1)
+                self.__bit = [0] * (n + 1)
 
             def add(self, i, val):
                 i += 1
@@ -37,17 +45,17 @@ class Solution(object):
                     bit1.add(n, +1)
                     bit2.add(n, +n)
             curr = sl.index(i)
-            prv, nxt = (curr-1)%len(sl), (curr+1)%len(sl)
+            prv, nxt = (curr - 1) % len(sl), (curr + 1) % len(sl)
             if len(sl) != 1:
-                l = (sl[nxt]-sl[prv]-1)%n+1
-                bit1.add(l, d*(-1))
-                bit2.add(l, d*(-l))
-                l = (sl[curr]-sl[prv])%n
-                bit1.add(l, d*(+1))
-                bit2.add(l, d*(+l))
-                l = (sl[nxt]-sl[curr])%n
-                bit1.add(l, d*(+1))
-                bit2.add(l, d*(+l))
+                l = (sl[nxt] - sl[prv] - 1) % n + 1
+                bit1.add(l, d * (-1))
+                bit2.add(l, d * (-l))
+                l = (sl[curr] - sl[prv]) % n
+                bit1.add(l, d * (+1))
+                bit2.add(l, d * (+l))
+                l = (sl[nxt] - sl[curr]) % n
+                bit1.add(l, d * (+1))
+                bit2.add(l, d * (+l))
             if d == -1:
                 if len(sl) == 1:
                     bit1.add(n, -1)
@@ -56,21 +64,51 @@ class Solution(object):
 
         n = len(colors)
         sl = SortedList()
-        bit1, bit2 = BIT(n+1), BIT(n+1)
-        for i in xrange(n):
-            if colors[i] == colors[(i+1)%n]:
+        bit1, bit2 = BIT(n + 1), BIT(n + 1)
+        for i in range(n):
+            if colors[i] == colors[(i + 1) % n]:
                 update(i, +1)
         result = []
         for q in queries:
             if q[0] == 1:
                 l = q[1]
-                result.append((bit2.query(n)-bit2.query(l-1))-
-                              (l-1)*(bit1.query(n)-bit1.query(l-1)) if sl else n)
+                result.append((bit2.query(n) - bit2.query(l - 1)) -
+                              (l - 1) * (bit1.query(n) - bit1.query(l - 1)) if sl else n)
                 continue
             _, i, c = q
             if colors[i] == c:
-                continue      
-            colors[i] = c          
-            update((i-1)%n, +1 if colors[i] == colors[(i-1)%n] else -1) 
-            update(i, +1 if colors[i] == colors[(i+1)%n] else -1)
+                continue
+            colors[i] = c
+            update((i - 1) % n, +1 if colors[i] == colors[(i - 1) % n] else -1)
+            update(i, +1 if colors[i] == colors[(i + 1) % n] else -1)
+        return result
+
+
+class Solution2:
+    def numberOfAlternatingGroups(self, colors, queries):
+        """
+        :type colors: List[int]
+        :type queries: List[List[int]]
+        :rtype: List[int]
+        """
+        def count_groups(colors, k):
+            n = len(colors)
+            if k == 1:
+                return n
+            diff = [1 if colors[i] != colors[(i + 1) % n] else 0 for i in range(n)]
+            window = sum(diff[:k - 1])
+            total = 1 if window == k - 1 else 0
+            for i in range(1, n):
+                window += diff[(i + k - 2) % n] - diff[i - 1]
+                if window == k - 1:
+                    total += 1
+            return total
+
+        result = []
+        for q in queries:
+            if q[0] == 1:
+                result.append(count_groups(colors, q[1]))
+            else:
+                _, i, c = q
+                colors[i] = c
         return result

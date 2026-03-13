@@ -1,19 +1,27 @@
+"""
+题意: 找到海洋格到最近陆地的最大距离。
+思路1: 多源 BFS，从所有陆地同时扩展。
+复杂度: 时间 O(mn), 空间 O(mn)。
+思路2: 同上，使用队列层数计数。
+复杂度: 时间 O(mn), 空间 O(mn)。
+"""
+
 # Time:  O(m * n)
 # Space: O(m * n)
 
 import collections
 
 
-class Solution(object):
+class Solution:
     def maxDistance(self, grid):
         """
         :type grid: List[List[int]]
         :rtype: int
         """
         directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-        q = collections.deque([(i, j) for i in xrange(len(grid))
-                                      for j in xrange(len(grid[0])) if grid[i][j] == 1])    
-        if len(q) == len(grid)*len(grid[0]):
+        q = collections.deque([(i, j) for i in range(len(grid))
+                                      for j in range(len(grid[0])) if grid[i][j] == 1])
+        if len(q) == len(grid) * len(grid[0]):
             return -1
         level = -1
         while q:
@@ -21,9 +29,9 @@ class Solution(object):
             while q:
                 x, y = q.popleft()
                 for dx, dy in directions:
-                    nx, ny = x+dx, y+dy
-                    if not (0 <= nx < len(grid) and 
-                            0 <= ny < len(grid[0]) and 
+                    nx, ny = x + dx, y + dy
+                    if not (0 <= nx < len(grid) and
+                            0 <= ny < len(grid[0]) and
                             grid[nx][ny] == 0):
                         continue
                     next_q.append((nx, ny))
@@ -31,3 +39,30 @@ class Solution(object):
             q = next_q
             level += 1
         return level
+
+
+class Solution2:
+    def maxDistance(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        q = collections.deque()
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 1:
+                    q.append((i, j))
+        if len(q) == len(grid) * len(grid[0]):
+            return -1
+        dist = -1
+        while q:
+            for _ in range(len(q)):
+                x, y = q.popleft()
+                for dx, dy in directions:
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < len(grid) and 0 <= ny < len(grid[0]) and grid[nx][ny] == 0:
+                        grid[nx][ny] = 1
+                        q.append((nx, ny))
+            dist += 1
+        return dist

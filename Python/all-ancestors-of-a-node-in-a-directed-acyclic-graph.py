@@ -1,8 +1,18 @@
+"""
+题意: 给 DAG，返回每个节点的所有祖先（升序）。
+思路1: 以每个节点为起点 DFS，记录可达节点。
+复杂度: 时间 O(VE), 空间 O(V+E)。
+思路2: 反向图 BFS 搜索祖先。
+复杂度: 时间 O(VE log VE), 空间 O(V+E)。
+思路3: 拓扑排序传递祖先集合。
+复杂度: 时间 O(VE log VE), 空间 O(V+E)。
+"""
+
 # Time:  O(|V| * |E|)
 # Space: O(|V| + |E|)
 
 # dfs
-class Solution(object):
+class Solution:
     def getAncestors(self, n, edges):
         """
         :type n: int
@@ -10,7 +20,7 @@ class Solution(object):
         :rtype: List[List[int]]
         """
         def iter_dfs(adj, i, result):
-            lookup = [False]*len(adj)
+            lookup = [False] * len(adj)
             stk = [i]
             while stk:
                 u = stk.pop()
@@ -20,12 +30,12 @@ class Solution(object):
                     lookup[v] = True
                     stk.append(v)
                     result[v].append(i)
-                    
-        adj = [[] for _ in xrange(n)]
+
+        adj = [[] for _ in range(n)]
         for u, v in edges:
             adj[u].append(v)
-        result = [[] for _ in xrange(n)]
-        for u in xrange(n):
+        result = [[] for _ in range(n)]
+        for u in range(n):
             iter_dfs(adj, u, result)
         return result
 
@@ -33,7 +43,7 @@ class Solution(object):
 # Time:  O(|V| * |E| * log(|V| * |E|))
 # Space: O(|V| + |E|)
 # bfs
-class Solution2(object):
+class Solution2:
     def getAncestors(self, n, edges):
         """
         :type n: int
@@ -41,7 +51,7 @@ class Solution2(object):
         :rtype: List[List[int]]
         """
         def bfs(adj, i, result):
-            lookup = [False]*len(adj)
+            lookup = [False] * len(adj)
             q = [i]
             lookup[i] = True
             while q:
@@ -56,28 +66,28 @@ class Solution2(object):
                 q = new_q
             result[i].sort()
 
-        adj = [[] for _ in xrange(n)]
+        adj = [[] for _ in range(n)]
         for u, v in edges:
             adj[v].append(u)
-        result = [[] for _ in xrange(n)]
-        for u in xrange(n):
-            bfs(adj, u, result) 
+        result = [[] for _ in range(n)]
+        for u in range(n):
+            bfs(adj, u, result)
         return result
 
 
 # Time:  O(|V| * |E| * log(|V| * |E|))
 # Space: O(|V| + |E|)
 # topological sort
-class Solution3(object):
+class Solution3:
     def getAncestors(self, n, edges):
         """
         :type n: int
         :type edges: List[List[int]]
         :rtype: List[List[int]]
         """
-        result = [set() for _ in xrange(n)]
-        in_degree = [0]*n
-        adj = [[] for _ in xrange(n)]
+        result = [set() for _ in range(n)]
+        in_degree = [0] * n
+        adj = [[] for _ in range(n)]
         for u, v in edges:
             adj[u].append(v)
             in_degree[v] += 1

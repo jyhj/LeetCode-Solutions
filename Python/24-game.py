@@ -1,3 +1,11 @@
+"""
+题意: 给 4 个数，使用 + - * / 和括号判断能否得到 24。
+思路1: 递归枚举两两运算，使用浮点并允许误差。
+复杂度: 时间 O(n^3 * 4^n), 空间 O(n^2)。
+思路2: 使用 Fraction 做精确计算，避免浮点误差。
+复杂度: 时间 O(n^3 * 4^n), 空间 O(n^2)。
+"""
+
 # Time:  O(n^3 * 4^n) = O(1), n = 4
 # Space: O(n^2) = O(1)
 
@@ -5,20 +13,20 @@ from operator import add, sub, mul, truediv
 from fractions import Fraction
 
 
-class Solution(object):
+class Solution:
     def judgePoint24(self, nums):
         """
         :type nums: List[int]
         :rtype: bool
         """
         if len(nums) == 1:
-            return abs(nums[0]-24) < 1e-6
+            return abs(nums[0] - 24) < 1e-6
         ops = [add, sub, mul, truediv]
-        for i in xrange(len(nums)):
-            for j in xrange(len(nums)):
+        for i in range(len(nums)):
+            for j in range(len(nums)):
                 if i == j:
                     continue
-                next_nums = [nums[k] for k in xrange(len(nums)) if i != k != j]
+                next_nums = [nums[k] for k in range(len(nums)) if i != k != j]
                 for op in ops:
                     if ((op is add or op is mul) and j > i) or \
                        (op == truediv and nums[j] == 0):
@@ -32,7 +40,7 @@ class Solution(object):
 
 # Time:  O(n^3 * 4^n) = O(1), n = 4
 # Space: O(n^2) = O(1)
-class Solution2(object):
+class Solution2:
     def judgePoint24(self, nums):
         """
         :type nums: List[int]
@@ -42,11 +50,11 @@ class Solution2(object):
             if len(nums) == 1:
                 return nums[0] == 24
             ops = [add, sub, mul, truediv]
-            for i in xrange(len(nums)):
-                for j in xrange(len(nums)):
+            for i in range(len(nums)):
+                for j in range(len(nums)):
                     if i == j:
                         continue
-                    next_nums = [nums[k] for k in xrange(len(nums))
+                    next_nums = [nums[k] for k in range(len(nums))
                                  if i != k != j]
                     for op in ops:
                         if ((op is add or op is mul) and j > i) or \
@@ -58,5 +66,5 @@ class Solution2(object):
                         next_nums.pop()
             return False
 
-        return dfs(map(Fraction, nums))
+        return dfs(list(map(Fraction, nums)))
 

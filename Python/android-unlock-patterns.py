@@ -1,9 +1,19 @@
+"""
+题意: 统计安卓解锁的有效解锁路径数量（长度在 [m,n]）。
+思路1: DP 枚举状态和结尾点。
+复杂度: 时间 O(9^2 * 2^9), 空间 O(9 * 2^9)。
+思路2: 另一种 DP 转移方向。
+复杂度: 时间 O(9^2 * 2^9), 空间 O(9 * 2^9)。
+思路3: 回溯枚举（较慢）。
+复杂度: 时间 O(9!), 空间 O(9)。
+"""
+
 # Time:  O(9^2 * 2^9)
 # Space: O(9 * 2^9)
 
 
 # DP solution.
-class Solution(object):
+class Solution:
     def numberOfPatterns(self, m, n):
         """
         :type m: int
@@ -28,17 +38,17 @@ class Solution(object):
 
         # dp[i][j]: i is the set of the numbers in binary representation,
         #           dp[i][j] is the number of ways ending with the number j.
-        dp = [[0] * 9 for _ in xrange(1 << 9)]
-        for i in xrange(9):
+        dp = [[0] * 9 for _ in range(1 << 9)]
+        for i in range(9):
             dp[merge(0, i)][i] = 1
 
         res = 0
-        for used in xrange(len(dp)):
+        for used in range(len(dp)):
             number = number_of_keys(used)
             if number > n:
                 continue
 
-            for i in xrange(9):
+            for i in range(9):
                 if not contain(used, i):
                     continue
 
@@ -46,7 +56,7 @@ class Solution(object):
                     res += dp[used][i]
 
                 x1, y1 = divmod(i, 3)
-                for j in xrange(9):
+                for j in range(9):
                     if contain(used, j):
                         continue
 
@@ -66,7 +76,7 @@ class Solution(object):
 # Time:  O(9^2 * 2^9)
 # Space: O(9 * 2^9)
 # DP solution.
-class Solution2(object):
+class Solution2:
     def numberOfPatterns(self, m, n):
         """
         :type m: int
@@ -94,22 +104,22 @@ class Solution2(object):
 
         # dp[i][j]: i is the set of the numbers in binary representation,
         #            d[i][j] is the number of ways ending with the number j.
-        dp = [[0] * 9 for _ in xrange(1 << 9)]
-        for i in xrange(9):
+        dp = [[0] * 9 for _ in range(1 << 9)]
+        for i in range(9):
             dp[merge(0, i)][i] = 1
 
         res = 0
-        for used in xrange(len(dp)):
+        for used in range(len(dp)):
             number = number_of_keys(used)
             if number > n:
                 continue
 
-            for i in xrange(9):
+            for i in range(9):
                 if not contain(used, i):
                     continue
 
                 x1, y1 = divmod(i, 3)
-                for j in xrange(9):
+                for j in range(9):
                     if i == j or not contain(used, j):
                         continue
 
@@ -132,7 +142,7 @@ class Solution2(object):
 # Time:  O(9!)
 # Space: O(9)
 # Backtracking solution. (TLE)
-class Solution_TLE(object):
+class Solution3:
     def numberOfPatterns(self, m, n):
         """
         :type m: int
@@ -157,7 +167,7 @@ class Solution_TLE(object):
                 number += 1
 
             x1, y1 = divmod(i, 3)
-            for j in xrange(9):
+            for j in range(9):
                 if contain(used, j):
                     continue
 

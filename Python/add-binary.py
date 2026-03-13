@@ -1,44 +1,54 @@
-# Time:  O(n)
-# Space: O(1)
+"""
+题意: 给两个二进制字符串，返回它们的二进制和（仍为字符串）。
+思路1: 从低位到高位逐位相加，维护进位。
+复杂度: 时间 O(n), 空间 O(n)。
+思路2: 使用 zip_longest 对齐反转字符串，逐位相加。
+复杂度: 时间 O(n), 空间 O(n)。
+"""
 
-class Solution(object):
+# Time:  O(n)
+# Space: O(n)
+class Solution:
     # @param a, a string
     # @param b, a string
     # @return a string
     def addBinary(self, a, b):
-        result, carry, val = "", 0, 0
-        for i in xrange(max(len(a), len(b))):
+        digits = []
+        carry = 0
+        for i in range(max(len(a), len(b))):
             val = carry
             if i < len(a):
                 val += int(a[-(i + 1)])
             if i < len(b):
                 val += int(b[-(i + 1)])
             carry, val = divmod(val, 2)
-            result += str(val)
+            digits.append(str(val))
         if carry:
-            result += str(carry)
-        return result[::-1]
+            digits.append("1")
+        digits.reverse()
+        return "".join(digits)
 
 
 # Time:  O(n)
-# Space: O(1)
-from itertools import izip_longest
+# Space: O(n)
+from itertools import zip_longest
 
 
-class Solution2(object):
+class Solution2:
     def addBinary(self, a, b):
         """
         :type a: str
         :type b: str
         :rtype: str
         """
-        result = ""
+        digits = []
         carry = 0
-        for x, y in izip_longest(reversed(a), reversed(b), fillvalue="0"):
-            carry, remainder = divmod(int(x)+int(y)+carry, 2)
-            result += str(remainder)
-        
+        for x, y in zip_longest(reversed(a), reversed(b), fillvalue="0"):
+            carry, remainder = divmod(int(x) + int(y) + carry, 2)
+            digits.append(str(remainder))
+
         if carry:
-            result += str(carry)
-        
-        return result[::-1]
+            digits.append(str(carry))
+
+        digits.reverse()
+        return "".join(digits)

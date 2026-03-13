@@ -1,3 +1,13 @@
+"""
+题意: 找出所有和为 target 的不重复四元组。
+思路1: 排序后固定前两个数，双指针找后两个。
+复杂度: 时间 O(n^3), 空间 O(1)。
+思路2: 哈希保存两数和，合并为四元组并去重。
+复杂度: 时间 O(n^2 * p), 空间 O(n^2)。
+思路3: 哈希两数和的朴素合并。
+复杂度: 时间 O(n^4), 空间 O(n^2)。
+"""
+
 # Time:  O(n^3)
 # Space: O(1)
 
@@ -5,7 +15,7 @@ import collections
 
 
 # Two pointer solution. (1356ms)
-class Solution(object):
+class Solution:
     def fourSum(self, nums, target):
         """
         :type nums: List[int]
@@ -14,10 +24,10 @@ class Solution(object):
         """
         nums.sort()
         result = []
-        for i in xrange(len(nums) - 3):
+        for i in range(len(nums) - 3):
             if i and nums[i] == nums[i - 1]:
                 continue
-            for j in xrange(i + 1, len(nums) - 2):
+            for j in range(i + 1, len(nums) - 2):
                 if j != i + 1 and nums[j] == nums[j - 1]:
                     continue
                 total = target - nums[i] - nums[j]
@@ -41,7 +51,7 @@ class Solution(object):
 # Time:  O(n^2 * p)
 # Space: O(n^2 * p)
 # Hash solution. (224ms)
-class Solution2(object):
+class Solution2:
     def fourSum(self, nums, target):
         """
         :type nums: List[int]
@@ -49,8 +59,8 @@ class Solution2(object):
         :rtype: List[List[int]]
         """
         nums, result, lookup = sorted(nums), [], collections.defaultdict(list)
-        for i in xrange(0, len(nums) - 1):
-            for j in xrange(i + 1, len(nums)):
+        for i in range(0, len(nums) - 1):
+            for j in range(i + 1, len(nums)):
                 is_duplicated = False
                 for [x, y] in lookup[nums[i] + nums[j]]:
                     if nums[x] == nums[i]:
@@ -59,8 +69,8 @@ class Solution2(object):
                 if not is_duplicated:
                     lookup[nums[i] + nums[j]].append([i, j])
         ans = {}
-        for c in xrange(2, len(nums)):
-            for d in xrange(c+1, len(nums)):
+        for c in range(2, len(nums)):
+            for d in range(c + 1, len(nums)):
                 if target - nums[c] - nums[d] in lookup:
                     for [a, b] in lookup[target - nums[c] - nums[d]]:
                         if b < c:
@@ -74,7 +84,7 @@ class Solution2(object):
 
 # Time:  O(n^2 * p) ~ O(n^4)
 # Space: O(n^2)
-class Solution3(object):
+class Solution3:
     def fourSum(self, nums, target):
         """
         :type nums: List[int]
@@ -82,11 +92,11 @@ class Solution3(object):
         :rtype: List[List[int]]
         """
         nums, result, lookup = sorted(nums), [], collections.defaultdict(list)
-        for i in xrange(0, len(nums) - 1):
-            for j in xrange(i + 1, len(nums)):
+        for i in range(0, len(nums) - 1):
+            for j in range(i + 1, len(nums)):
                 lookup[nums[i] + nums[j]].append([i, j])
 
-        for i in lookup.keys():
+        for i in list(lookup.keys()):
             if target - i in lookup:
                 for x in lookup[i]:
                     for y in lookup[target - i]:

@@ -1,8 +1,19 @@
+"""
+题意: 重新排列数组，使任何元素不等于相邻两元素的平均值。
+思路1: 通过中位数三向划分 + 虚拟索引重排。
+复杂度: 时间 O(n) 平均，空间 O(1)。
+思路2: 排序后交叉放置。
+复杂度: 时间 O(n log n), 空间 O(n)。
+"""
+
 # Time:  O(n) ~ O(n^2), O(n) on average
 # Space: O(1)
 
+import random
+
+
 # Tri Partition (aka Dutch National Flag Problem) with virtual index solution
-class Solution(object):
+class Solution:
     def rearrangeArray(self, nums):
         """
         :type nums: List[int]
@@ -23,22 +34,22 @@ class Solution(object):
                         right -= 1
                 return left, right
 
-            left, right = 0, len(nums)-1
+            left, right = 0, len(nums) - 1
             while left <= right:
-                pivot_idx = randint(left, right)
+                pivot_idx = random.randint(left, right)
                 pivot_left, pivot_right = tri_partition(nums, left, right, nums[pivot_idx], compare)
                 if pivot_left <= n <= pivot_right:
                     return
                 elif pivot_left > n:
-                    right = pivot_left-1
+                    right = pivot_left - 1
                 else:  # pivot_right < n.
-                    left = pivot_right+1
+                    left = pivot_right + 1
 
         def reversedTriPartitionWithVI(nums, val):
             def idx(i, N):
                 return (1 + 2 * (i)) % N
 
-            N = len(nums)//2 * 2 + 1
+            N = len(nums) // 2 * 2 + 1
             i, j, n = 0, 0, len(nums) - 1
             while j <= n:
                 if nums[idx(j, N)] > val:
@@ -51,7 +62,7 @@ class Solution(object):
                 else:
                     j += 1
 
-        mid = (len(nums)-1)//2
+        mid = (len(nums) - 1) // 2
         nth_element(nums, mid)
         reversedTriPartitionWithVI(nums, nums[mid])
         return nums
@@ -60,13 +71,13 @@ class Solution(object):
 # Time:  O(nlogn)
 # Space: O(n)
 # Sorting and reorder solution
-class Solution2(object):
+class Solution2:
     def rearrangeArray(self, nums):
         """
         :type nums: List[int]
         :rtype: List[int]
         """
         nums.sort()
-        mid = (len(nums)-1)//2
+        mid = (len(nums) - 1) // 2
         nums[::2], nums[1::2] = nums[mid::-1], nums[:mid:-1]
         return nums
